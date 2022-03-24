@@ -16,11 +16,9 @@
 
                     {{ __('You are logged in!') }}
                 </div>
+                <a href="posts/print" class="btn btn-primary" target="_blank">CETAK PDF</a>
             </div>
         </div>
     </div>
-</div>
-<div class="container">	
-    <div id="heart"></div>
 </div>
 @endsection

@@ -9,6 +9,7 @@ Route::prefix('posts')->middleware('auth')->group(function () {
     Route::get('{post:slug}/edit', 'PostController@edit');
     Route::patch('{post:slug}/edit', 'PostController@update');
     Route::delete('{post:slug}/delete', 'PostController@destroy');
+    Route::get('print', 'PostController@print');
 });
 Route::get('posts/{post:slug}', 'PostController@show')->name('posts.show');
 

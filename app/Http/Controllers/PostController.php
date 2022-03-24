@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\{Category, Post, Tag};
 use App\Http\Requests\PostRequest;
+use PDF;
 
 class PostController extends Controller
 {
@@ -17,7 +18,22 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $posts = Post::where('category_id', $post->category_id)->latest()->limit(6)->get();
-        return view('posts.show', compact('post', 'posts'));
+        include('functions.php');
+        $src = 'storage/' . $post->thumbnail; // . $post->thumbnail;
+        $im = imagecreatefrompng($src);
+        $real_message = '';
+        for ($x = 0; $x < 40; $x++) {
+            $y = $x;
+            $rgb = imagecolorat($im, $x, $y);
+            $r = ($rgb >> 16) & 0xFF;
+            $g = ($rgb >> 8) & 0xFF;
+            $b = $rgb & 0xFF;
+
+            $blue = toBin($b);
+            $real_message .= $blue[strlen($blue) - 1];
+        }
+        $real_message = toString($real_message);
+        return view('posts.show', compact('post', 'posts', 'real_message'));
     }
 
     public function create()
@@ -32,22 +48,46 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $request->validate([
-            'thumbnail' => 'image|mimes:jpeg,png,jpg,svg|max:2048'
+            'thumbnail' => 'image|mimes:png'
         ]);
         $attr = $request->all();
- 
+
         $slug = \Str::slug(request('title'));
         $attr['slug'] = $slug;
-        
+
 
         $thumbnail = request()->file('thumbnail') ? request()->file('thumbnail')->store("images/posts") : null;
-        
+
         $attr['category_id'] = request('category');
         $attr['thumbnail'] = $thumbnail;
 
         // Create new post
         $post = auth()->user()->posts()->create($attr);
         $post->tags()->attach(request('tags'));
+        include('functions.php');
+        $message_to_hide = request('hidden-message');
+        $binary_message = toBin($message_to_hide);
+        $message_length = strlen($binary_message);
+        $src = 'storage/' . $thumbnail;
+        $im = imagecreatefrompng($src);
+        for ($x = 0; $x < $message_length; $x++) {
+            $y = $x;
+            $rgb = imagecolorat($im, $x, $y);
+            $r = ($rgb >> 16) & 0xFF;
+            $g = ($rgb >> 8) & 0xFF;
+            $b = $rgb & 0xFF;
+
+            $newR = $r;
+            $newG = $g;
+            $newB = toBin($b);
+            $newB[strlen($newB) - 1] = $binary_message[$x];
+            $newB = toString($newB);
+
+            $new_color = imagecolorallocate($im, $newR, $newG, $newB);
+            imagesetpixel($im, $x, $y, $new_color);
+        }
+        imagepng($im, 'storage/' . $thumbnail);
+        imagedestroy($im);
 
         session()->flash('success', 'The post was created!');
         return redirect('posts');
@@ -97,5 +137,13 @@ class PostController extends Controller
         $post->delete();
         session()->flash("error", "The post was deleted");
         return redirect('posts');
+    }
+
+    public function print()
+    {
+        $post = Post::all();
+        $pdf = PDF::loadview('posts/post_pdf', ['post' => $post]);
+        dd($pdf);
+        return $pdf->stream();
     }
 }

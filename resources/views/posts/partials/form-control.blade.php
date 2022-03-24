@@ -54,4 +54,13 @@
         </div>
     @enderror
 </div>
+<div class="form-group">
+    <label for="hidden-message">Hidden Message</label>
+    <input style="text-transform: lowercase" maxlength="5" name="hidden-message" id="hidden-message" class="form-control @error('hidden-message') is-invalid @enderror"></input>
+    @error('message')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+    @enderror
+</div>
 <button type="submit" class="btn btn-primary">{{ $submit ?? 'Update' }}</button>
