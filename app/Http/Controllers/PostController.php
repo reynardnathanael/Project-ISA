@@ -38,6 +38,7 @@ class PostController extends Controller
  
         $slug = \Str::slug(request('title'));
         $attr['slug'] = $slug;
+        
 
         $thumbnail = request()->file('thumbnail') ? request()->file('thumbnail')->store("images/posts") : null;
         

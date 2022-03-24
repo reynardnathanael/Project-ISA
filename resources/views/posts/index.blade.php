@@ -71,7 +71,7 @@
                         </div>
                         <div class="text-secondary my-3">
                             <small>
-                                Published on {{ $post->created_at->diffForHumans() }}
+                                Published {{ $post->created_at->diffForHumans() }}
                             </small>
                         </div>
                     </div>
