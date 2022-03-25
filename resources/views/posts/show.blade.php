@@ -9,7 +9,9 @@
                     <img style="height: 550px; object-fit: cover; object-position: center;" class="rounded w-100" src="{{ $post->takeImage }}">
                 @endif
                 <h1>{{ $post->title }}</h1>
-                <h6  class="text-secondary">hidden note: {{ $real_message }}</h6>
+                @can('hidden', $post)
+                    <h6  class="text-secondary">hidden note: {{ $real_message }}</h6>
+                @endcan
                 <div class="text-secondary mb-3">
                     <a href="/categories/{{ $post->category->slug }}">{{ $post->category->name }}</a> 
                     &middot; {{ $post->created_at->format("d F, Y") }}

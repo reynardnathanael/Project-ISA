@@ -29,4 +29,14 @@ class PostPolicy
     {
         return $user->id === $post->user_id;
     }
+
+    public function hidden(User $user, Post $post)
+    {
+        return $user->id === $post->user_id;
+    }
+
+    public function print(User $user)
+    {
+        return $user->role === 'admin';
+    }
 }

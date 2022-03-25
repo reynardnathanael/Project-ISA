@@ -16,7 +16,9 @@
 
                     {{ __('You are logged in!') }}
                 </div>
-                <a href="posts/print" class="btn btn-primary" target="_blank">CETAK PDF</a>
+                @can('print')
+                    <a href="posts/print" class="btn btn-primary" target="_blank">CETAK PDF</a>
+                @endcan
             </div>
         </div>
     </div>
