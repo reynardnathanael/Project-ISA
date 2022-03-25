@@ -22,7 +22,7 @@ class PostController extends Controller
         $src = 'storage/' . $post->thumbnail; // . $post->thumbnail;
         $im = imagecreatefrompng($src);
         $real_message = '';
-        for ($x = 0; $x < 40; $x++) {
+        for ($x = 0; $x < 64; $x++) {
             $y = $x;
             $rgb = imagecolorat($im, $x, $y);
             $r = ($rgb >> 16) & 0xFF;
@@ -48,8 +48,9 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $request->validate([
-            'thumbnail' => 'image|mimes:png'
+            'thumbnail' => 'required|image|mimes:png',
         ]);
+
         $attr = $request->all();
 
         $slug = \Str::slug(request('title'));
@@ -141,9 +142,8 @@ class PostController extends Controller
 
     public function print()
     {
-        $post = Post::all();
-        $pdf = PDF::loadview('posts/post_pdf', ['post' => $post]);
-        dd($pdf);
-        return $pdf->stream();
+        $posts = Post::all();
+        $pdf = PDF::loadview('posts.post_pdf', compact('posts'));
+        return $pdf->stream("posts.pdf", array("Attachment" => 0));
     }
 }

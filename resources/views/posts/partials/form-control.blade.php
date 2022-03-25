@@ -1,11 +1,13 @@
 <div class="form-group">
     <input type="file" name="thumbnail" id="thumbnail">
+    <div><p>Hello</p></div>
     @error('thumbnail')
         <div class="invalid-feedback">
             {{ $message }}
         </div>
     @enderror
 </div>
+
 <div class="form-group">
     <label for="title">Title</label>
     <input type="text" name="title" value="{{ old('title') ?? $post->title }}" id="title" class="form-control @error('title') is-invalid @enderror">
@@ -55,9 +57,9 @@
     @enderror
 </div>
 <div class="form-group">
-    <label for="hidden-message">Hidden Message</label>
-    <input style="text-transform: lowercase" maxlength="5" name="hidden-message" id="hidden-message" class="form-control @error('hidden-message') is-invalid @enderror"></input>
-    @error('message')
+    <label for="hidden-message">Hidden Message (8 characters)</label>
+    <input maxlength="8" name="hidden-message" id="hidden-message" class="form-control @error('hidden-message') is-invalid @enderror">
+    @error('hidden-message')
         <div class="invalid-feedback">
             {{ $message }}
         </div>
