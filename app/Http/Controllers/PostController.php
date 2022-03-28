@@ -33,6 +33,7 @@ class PostController extends Controller
             $real_message .= $blue[strlen($blue) - 1];
         }
         $real_message = toString($real_message);
+        $post->body=decrypt($post->body);
         return view('posts.show', compact('post', 'posts', 'real_message'));
     }
 
@@ -61,6 +62,7 @@ class PostController extends Controller
 
         $attr['category_id'] = request('category');
         $attr['thumbnail'] = $thumbnail;
+        $attr['body'] = encrypt($request->body);
 
         // Create new post
         $post = auth()->user()->posts()->create($attr);
@@ -96,6 +98,7 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
+        $post->body=decrypt($post->body);
         return view('posts.edit', [
             'post' => $post,
             'categories' => Category::get(),
@@ -120,6 +123,7 @@ class PostController extends Controller
         $attr = $request->all();
         $attr['category_id'] = request('category');
         $attr['thumbnail'] = $thumbnail;
+        $attr['body'] = encrypt($request->body);
 
         // Update the post
         $post->update($attr);
