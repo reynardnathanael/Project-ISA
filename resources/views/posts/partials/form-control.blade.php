@@ -1,6 +1,5 @@
 <div class="form-group">
     <input type="file" name="thumbnail" id="thumbnail">
-    <div><p>Hello</p></div>
     @error('thumbnail')
         <div class="invalid-feedback">
             {{ $message }}

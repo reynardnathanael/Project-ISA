@@ -49,23 +49,24 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-2">
-                                        <div>{{ $post->title }}</div>
-                                        <div class="text-secondary">
-                                            <small>Published: {{ $post->created_at->format("d F, Y") }}</small>
+                                    <div class="modal-body">
+                                        <div class="mb-2">
+                                            <div>{{ $post->title }}</div>
+                                            <div class="text-secondary">
+                                                <small>Published: {{ $post->created_at->format("d F, Y") }}</small>
+                                            </div>
                                         </div>
+                                        <form action="/posts/{{ $post->slug }}/delete" method="post">
+                                            @csrf
+                                            @method("delete")
+                                            <div class="d-flex">
+                                                <button class="btn btn-danger mr-2" type="submit">Iya</button>
+                                                <button type="button" class="btn btn-success" data-dismiss="modal">Tidak</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <form action="/posts/{{ $post->slug }}/delete" method="post">
-                                        @csrf
-                                        @method("delete")
-                                        <div class="d-flex">
-                                            <button class="btn btn-danger mr-2" type="submit">Iya</button>
-                                            <button type="button" class="btn btn-success" data-dismiss="modal">Tidak</button>
-                                        </div>
-                                    </form>
                                 </div>
+
                             </div>
                         </div>
                     @endcan
