@@ -128,6 +128,30 @@ class PostController extends Controller
         // Update the post
         $post->update($attr);
         $post->tags()->sync(request('tags'));
+        include('functions.php');
+        $message_to_hide = request('hidden-message');
+        $binary_message = toBin($message_to_hide);
+        $message_length = strlen($binary_message);
+        $src = 'storage/' . $thumbnail;
+        $im = imagecreatefrompng($src);
+        for ($x = 0; $x < $message_length; $x++) {
+            $y = $x;
+            $rgb = imagecolorat($im, $x, $y);
+            $r = ($rgb >> 16) & 0xFF;
+            $g = ($rgb >> 8) & 0xFF;
+            $b = $rgb & 0xFF;
+
+            $newR = $r;
+            $newG = $g;
+            $newB = toBin($b);
+            $newB[strlen($newB) - 1] = $binary_message[$x];
+            $newB = toString($newB);
+
+            $new_color = imagecolorallocate($im, $newR, $newG, $newB);
+            imagesetpixel($im, $x, $y, $new_color);
+        }
+        imagepng($im, 'storage/' . $thumbnail);
+        imagedestroy($im);
 
         session()->flash('success', 'The post was updated!');
         return redirect('posts');

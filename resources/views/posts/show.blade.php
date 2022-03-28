@@ -97,10 +97,6 @@
                                     {{ $post->title }}
                                 </a>
                             </h5>
-                            
-                            <div class="text-secondary">
-                                {{ Str::limit($post->body, 130) }}
-                            </div>
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <div class="media align-items-center">
                                     <img width="40" class="rounded-circle mr-3" src="{{ $post->author->gravatar() }}" alt="">
