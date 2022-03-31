@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('posts')->middleware('auth')->group(function () {
     Route::get('search', 'SearchController@post')->name('search.posts');
-    Route::get('posts', 'PostController@index')->name('posts.index');
+    Route::get('', 'PostController@index')->name('posts.index');
     Route::get('create', 'PostController@create')->name('posts.create');
     Route::post('store', 'PostController@store');
     Route::get('{post:slug}/edit', 'PostController@edit');

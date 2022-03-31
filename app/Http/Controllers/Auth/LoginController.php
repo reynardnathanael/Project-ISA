@@ -42,4 +42,9 @@ class LoginController extends Controller
     {
         return 'username';
     }
+    
+    public function password()
+    {
+        return 'password';
+    }
 }
