@@ -50,7 +50,7 @@
 						@endforeach
 					</ul>
 				</td>
-				<td>{{ $post->body }}</td>
+				<td>{{ decrypt($post->body) }}</td>
 			</tr>
 			@endforeach
 		</tbody>
