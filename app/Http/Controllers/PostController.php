@@ -56,17 +56,14 @@ class PostController extends Controller
 
         $slug = \Str::slug(request('title'));
         $attr['slug'] = $slug;
-
-
         $thumbnail = request()->file('thumbnail') ? request()->file('thumbnail')->store("images/posts") : null;
-
         $attr['category_id'] = request('category');
         $attr['thumbnail'] = $thumbnail;
         $attr['body'] = encrypt($request->body);
 
-        // Create new post
         $post = auth()->user()->posts()->create($attr);
         $post->tags()->attach(request('tags'));
+
         include('functions.php');
         $message_to_hide = request('hidden-message');
         $binary_message = toBin($message_to_hide);
@@ -125,9 +122,9 @@ class PostController extends Controller
         $attr['thumbnail'] = $thumbnail;
         $attr['body'] = encrypt($request->body);
 
-        // Update the post
         $post->update($attr);
         $post->tags()->sync(request('tags'));
+        
         include('functions.php');
         $message_to_hide = request('hidden-message');
         $binary_message = toBin($message_to_hide);
